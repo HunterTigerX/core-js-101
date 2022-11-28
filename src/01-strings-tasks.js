@@ -247,25 +247,24 @@ function getRectangleString(width, height) {
  *    => 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm'
  *
  */
-function encodeToRot13(/* str */) {
-  throw new Error('Not implemented');
-  // let result = '';
-  // for (let i = 0; i < str.length; i += 1) {
-  //   if (str[i].charCodeAt(0) > 77 && str[i].charCodeAt(0) <= 90) {
-  //     result += String.fromCharCode(str[i].charCodeAt(0) + 13 - 26);
-  //   } else if (str[i].charCodeAt(0) > 109 && str[i].charCodeAt(0) <= 122) {
-  //     result += String.fromCharCode(str[i].charCodeAt(0) + 13 - 26);
-  //   } else if (
-  //     str[i].charCodeAt(0) <= 64
-  //     || (str[i].charCodeAt(0) >= 91 && str[i].charCodeAt(0) <= 96)
-  //     || str[i].charCodeAt(0) >= 123
-  //   ) {
-  //     result += str[i];
-  //   } else {
-  //     result += String.fromCharCode(str[i].charCodeAt(0) + 13);
-  //   }
-  // }
-  // return result;
+function encodeToRot13(str) {
+  let result = '';
+  for (let i = 0; i < str.length; i += 1) {
+    if (str[i].charCodeAt(0) > 77 && str[i].charCodeAt(0) <= 90) {
+      result += String.fromCharCode(str[i].charCodeAt(0) + 13 - 26);
+    } else if (str[i].charCodeAt(0) > 109 && str[i].charCodeAt(0) <= 122) {
+      result += String.fromCharCode(str[i].charCodeAt(0) + 13 - 26);
+    } else if (
+      str[i].charCodeAt(0) <= 64
+      || (str[i].charCodeAt(0) >= 91 && str[i].charCodeAt(0) <= 96)
+      || str[i].charCodeAt(0) >= 123
+    ) {
+      result += str[i];
+    } else {
+      result += String.fromCharCode(str[i].charCodeAt(0) + 13);
+    }
+  }
+  return result;
 }
 
 /**
