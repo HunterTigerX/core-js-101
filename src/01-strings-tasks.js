@@ -283,7 +283,6 @@ function encodeToRot13(str) {
 function isString(value) {
   return typeof value === 'string' || value instanceof String;
 }
-
 /**
  * Returns playid card id.
  *

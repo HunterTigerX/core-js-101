@@ -539,8 +539,19 @@ function distinct(arr) {
  *    "Poland" => ["Lodz"]
  *   }
  */
-function group(/* array, keySelector, valueSelector */) {
-  throw new Error('Not implemented');
+function group(array, keySelector, valueSelector) {
+  const newObj = new Map();
+  const keys = array.map(keySelector);
+  const filtered = keys.filter((e, i) => keys.indexOf(e) === i);
+  const cities = array.map(valueSelector);
+  filtered.reduce((_accum, _next, i) => {
+    if (!newObj.has(filtered[i])) {
+      newObj.set(filtered[i], []);
+    }
+    return '0';
+  }, filtered);
+  array.map((e, i) => newObj.get(keys[i]).push(cities[i]));
+  return newObj;
 }
 
 /**
@@ -572,10 +583,9 @@ function selectMany(arr, childrenSelector) {
  *   ['one','two','three'], [2]       => 'three'  (arr[2])
  *   [[[ 1, 2, 3]]], [ 0, 0, 1 ]      => 2        (arr[0][0][1])
  */
-function getElementByIndexes(/* arr, indexes */) {
-  throw new Error('Not implemented');
+function getElementByIndexes(arr, indexes) {
+  return indexes.reduce((accumulator, currentValue) => accumulator[currentValue], arr);
 }
-
 /**
  * Swaps the head and tail of the specified array:
  * the head (first half) of array move to the end, the tail (last half) move to the start.
@@ -594,8 +604,19 @@ function getElementByIndexes(/* arr, indexes */) {
  *   [ 1, 2, 3, 4, 5, 6, 7, 8 ]   =>  [ 5, 6, 7, 8, 1, 2, 3, 4 ]
  *
  */
-function swapHeadAndTail(/* arr */) {
-  throw new Error('Not implemented');
+function swapHeadAndTail(arr) {
+  const copy = [...arr];
+  const half = Math.floor(arr.length / 2);
+  const head = copy.splice(0, half);
+  let tail;
+  if (arr.length % 2 === 0) {
+    copy.push(...head);
+  } else {
+    tail = copy.splice(1, half);
+    copy.push(...head);
+    copy.unshift(...tail);
+  }
+  return copy;
 }
 
 module.exports = {
