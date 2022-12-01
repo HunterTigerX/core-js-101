@@ -6,7 +6,6 @@
  *                                                                                                *
  ************************************************************************************************ */
 
-
 /**
  * Returns the rectangle object with width and height parameters and getArea() method
  *
@@ -20,10 +19,13 @@
  *    console.log(r.height);      // => 20
  *    console.log(r.getArea());   // => 200
  */
-function Rectangle(/* width, height */) {
-  throw new Error('Not implemented');
+function Rectangle(width, height) {
+  this.width = width;
+  this.height = height;
+  this.getArea = function gA() {
+    return width * height;
+  };
 }
-
 
 /**
  * Returns the JSON representation of specified object
@@ -35,10 +37,9 @@ function Rectangle(/* width, height */) {
  *    [1,2,3]   =>  '[1,2,3]'
  *    { width: 10, height : 20 } => '{"height":10,"width":20}'
  */
-function getJSON(/* obj */) {
-  throw new Error('Not implemented');
+function getJSON(obj) {
+  return JSON.stringify(obj);
 }
-
 
 /**
  * Returns the object of specified type from JSON representation
@@ -51,11 +52,10 @@ function getJSON(/* obj */) {
  *    const r = fromJSON(Circle.prototype, '{"radius":10}');
  *
  */
-function fromJSON(/* proto, json */) {
-  throw new Error('Not implemented');
+function fromJSON(proto, json) {
+  const repr = Object.values(JSON.parse(json));
+  return new proto.constructor(...repr);
 }
-
-
 /**
  * Css selectors builder
  *
@@ -111,35 +111,94 @@ function fromJSON(/* proto, json */) {
  */
 
 const cssSelectorBuilder = {
-  element(/* value */) {
-    throw new Error('Not implemented');
+  lastElementCreated: '',
+  prevCheckElement: '',
+
+  element(value) {
+    const copyOfObject = Object.create(this);
+    copyOfObject.lastElementCreated += value;
+    copyOfObject.checkPosition(1);
+    copyOfObject.position = 1;
+    cssSelectorBuilder.checkMultipleOccurence('element');
+    return copyOfObject;
   },
 
-  id(/* value */) {
-    throw new Error('Not implemented');
+  id(value) {
+    const copyOfObject = Object.create(this);
+    copyOfObject.lastElementCreated += `#${value}`;
+    copyOfObject.checkPosition(2);
+    copyOfObject.position = 2;
+    cssSelectorBuilder.checkMultipleOccurence('id');
+    return copyOfObject;
   },
 
-  class(/* value */) {
-    throw new Error('Not implemented');
+  class(value) {
+    cssSelectorBuilder.checkMultipleOccurence('class');
+    const copyOfObject = Object.create(this);
+    copyOfObject.lastElementCreated += `.${value}`;
+    copyOfObject.checkPosition(3);
+    copyOfObject.position = 3;
+    return copyOfObject;
   },
 
-  attr(/* value */) {
-    throw new Error('Not implemented');
+  attr(value) {
+    cssSelectorBuilder.checkMultipleOccurence('attr');
+    const copyOfObject = Object.create(this);
+    copyOfObject.lastElementCreated += `[${value}]`;
+    copyOfObject.checkPosition(4);
+    copyOfObject.position = 4;
+    return copyOfObject;
   },
 
-  pseudoClass(/* value */) {
-    throw new Error('Not implemented');
+  pseudoClass(value) {
+    cssSelectorBuilder.checkMultipleOccurence('pseudoClass');
+    const copyOfObject = Object.create(this);
+    copyOfObject.lastElementCreated += `:${value}`;
+    copyOfObject.checkPosition(5);
+    copyOfObject.position = 5;
+    return copyOfObject;
   },
 
-  pseudoElement(/* value */) {
-    throw new Error('Not implemented');
+  pseudoElement(value) {
+    cssSelectorBuilder.checkMultipleOccurence('pseudoElement');
+    const copyOfObject = Object.create(this);
+    copyOfObject.lastElementCreated += `::${value}`;
+    copyOfObject.checkPosition(6);
+    copyOfObject.position = 6;
+    return copyOfObject;
   },
 
-  combine(/* selector1, combinator, selector2 */) {
-    throw new Error('Not implemented');
+  combine(selector1, combinator, selector2) {
+    const copyOfObject = Object.create(this);
+    copyOfObject.lastElementCreated = `${selector1.lastElementCreated} ${combinator} ${selector2.lastElementCreated}`;
+    return copyOfObject;
+  },
+
+  stringify() {
+    cssSelectorBuilder.prevCheckElement = '';
+    return this.lastElementCreated;
+  },
+
+  checkPosition(position) {
+    if (position < this.position) {
+      throw new Error('Selector parts should be arranged in the following order: element, id, class, attribute, pseudo-class, pseudo-element');
+    } else {
+      cssSelectorBuilder.prevPosition = position;
+    }
+  },
+
+  checkMultipleOccurence(elementCreated) {
+    if ((elementCreated === cssSelectorBuilder.prevCheckElement) && (elementCreated === 'element')) {
+      throw new Error('Element, id and pseudo-element should not occur more then one time inside the selector');
+    } else if ((elementCreated === cssSelectorBuilder.prevCheckElement) && (elementCreated === 'id')) {
+      throw new Error('Element, id and pseudo-element should not occur more then one time inside the selector');
+    } else if ((elementCreated === cssSelectorBuilder.prevCheckElement) && (elementCreated === 'pseudoElement')) {
+      throw new Error('Element, id and pseudo-element should not occur more then one time inside the selector');
+    } else {
+      cssSelectorBuilder.prevCheckElement = elementCreated;
+    }
   },
 };
-
 
 module.exports = {
   Rectangle,
