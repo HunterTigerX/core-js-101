@@ -125,24 +125,25 @@ function getFastestPromise(array) {
 //     return resultAll;
 //   }).then((res) => res.reduce(action));
 // }
-function chainPromises(array, action) {
-  return new Promise((resolve) => {
-    const resultAll = [];
-    array.forEach((res) => {
-      resolve(
-        Promise.resolve(res)
-          .then((value) => {
-            resultAll.push(value);
-            return resultAll;
-          })
-          .finally(),
-      );
-    });
-  })
-    .then((res) => res.reduce(action))
-    .catch(
-      (error) => console.log(error),
-    );
+function chainPromises(/* array, action */) {
+  throw new Error('Not implemented');
+  // return new Promise((resolve) => {
+  //   const resultAll = [];
+  //   array.forEach((res) => {
+  //     resolve(
+  //       Promise.resolve(res)
+  //         .then((value) => {
+  //           resultAll.push(value);
+  //           return resultAll;
+  //         })
+  //         .finally(),
+  //     );
+  //   });
+  // })
+  //   .then((res) => res.reduce(action))
+  //   .catch(
+  //     (error) => console.log(error),
+  //   );
 }
 module.exports = {
   willYouMarryMe,
