@@ -98,7 +98,7 @@ function getFastestPromise(array) {
  *    });
  *
  */
-// function chainPromises(array, action) {
+// function chainPromises(array, action) { v1
 //   return Promise.allSettled(array).then((result) => {
 //     const resultAll = [];
 //     result.forEach((res) => {
@@ -109,7 +109,7 @@ function getFastestPromise(array) {
 //     return resultAll;
 //   }).then((res) => { res.reduce(action); });
 // }
-// function chainPromises(array, action) {
+// function chainPromises(array, action) { v2
 //   return new Promise((resolve) => {
 //     const resultAll = [];
 //     array.forEach((res) => {
@@ -127,7 +127,7 @@ function getFastestPromise(array) {
 // }
 function chainPromises(/* array, action */) {
   throw new Error('Not implemented');
-  // return new Promise((resolve) => {
+  // return new Promise((resolve) => {  v3
   //   const resultAll = [];
   //   array.forEach((res) => {
   //     resolve(

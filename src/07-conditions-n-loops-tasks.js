@@ -366,8 +366,23 @@ function isCreditCardNumber(ccn) {
  *   10000 ( 1+0+0+0+0 = 1 ) => 1
  *   165536 (1+6+5+5+3+6 = 26,  2+6 = 8) => 8
  */
-function getDigitalRoot(/* num */) {
-  throw new Error('Not implemented');
+function getDigitalRoot(num) {
+  let result = num;
+  function concatNumbers(number) {
+    const checkNum = number.toString().length;
+    let newNum = 0;
+    if (checkNum > 1) {
+      for (let i = 0; i < checkNum; i += 1) {
+        newNum += Number(number.toString()[i]);
+      }
+      result = newNum;
+    }
+    if (newNum.toString().length > 1) {
+      concatNumbers(newNum);
+    }
+  }
+  concatNumbers(result);
+  return result;
 }
 
 /**
@@ -391,8 +406,31 @@ function getDigitalRoot(/* num */) {
  *   '{)' = false
  *   '{[(<{[]}>)]}' = true
  */
-function isBracketsBalanced(/* str */) {
-  throw new Error('Not implemented');
+function isBracketsBalanced(str) {
+  let result = true;
+  const bracketsArray = ['(', ')', '[', ']', '<', '>', '{', '}'];
+  const splittedStr = str.split('');
+  function spliceString(splittedStrX) {
+    for (let i = 0; i < splittedStrX.length; i += 1) {
+      const indexOfFirstKey = bracketsArray.indexOf(splittedStrX[0]);
+      if (indexOfFirstKey % 2 !== 0) {
+        result = false;
+        break;
+      }
+      if (bracketsArray.indexOf(splittedStr[i]) + 1 === bracketsArray.indexOf(splittedStr[i + 1])) {
+        splittedStrX.splice(i + 1, 1);
+        splittedStrX.splice(i, 1);
+        if (spliceString.length > 0) {
+          spliceString(splittedStrX);
+        }
+      }
+    }
+    if (splittedStr.length > 0) {
+      result = false;
+    }
+  }
+  spliceString(splittedStr);
+  return result;
 }
 
 /**
@@ -415,8 +453,8 @@ function isBracketsBalanced(/* str */) {
  *    365, 4  => '11231'
  *    365, 10 => '365'
  */
-function toNaryString(/* num, n */) {
-  throw new Error('Not implemented');
+function toNaryString(num, n) {
+  return num.toString(n);
 }
 
 /**
@@ -431,8 +469,24 @@ function toNaryString(/* num, n */) {
  *   ['/web/assets/style.css', '/.bin/mocha',  '/read.me'] => '/'
  *   ['/web/favicon.ico', '/web-scripts/dump', '/verbalizer/logs'] => '/'
  */
-function getCommonDirectoryPath(/* pathes */) {
-  throw new Error('Not implemented');
+function getCommonDirectoryPath(pathes) {
+  const path = [''];
+  const newArr = [];
+  let test;
+  for (let i = 0; i < pathes.length; i += 1) {
+    newArr.push(pathes[i].split('/'));
+  }
+  for (let i = 0; i < newArr[0].length; i += 1) {
+    test = newArr[0][i];
+    for (let x = 0; x < newArr.length; x += 1) {
+      if (newArr[x][i] !== test) {
+        return path.join('');
+      } if (x === newArr.length - 1) {
+        path.push(`${newArr[x][i]}/`);
+      }
+    }
+  }
+  return path.join('');
 }
 
 /**
@@ -453,8 +507,25 @@ function getCommonDirectoryPath(/* pathes */) {
  *                         [ 6 ]]
  *
  */
-function getMatrixProduct(/* m1, m2 */) {
-  throw new Error('Not implemented');
+function getMatrixProduct(m1, m2) {
+  const result = [];
+  let subArray = [];
+  let number = 0;
+  for (let i = 0; i < m2.length; i += 1) {
+    for (let x = 0; x < m2[i].length; x += 1) {
+      for (let y = 0; y < m1[i].length; y += 1) {
+        number += (m1[i][y] * m2[y][x]);
+      }
+      subArray.push(number);
+      number = 0;
+    }
+    result.push(subArray);
+    subArray = [];
+    if (m1.length === i + 1) {
+      break;
+    }
+  }
+  return result;
 }
 
 /**
@@ -487,8 +558,35 @@ function getMatrixProduct(/* m1, m2 */) {
  *    [    ,   ,    ]]
  *
  */
-function evaluateTicTacToePosition(/* position */) {
-  throw new Error('Not implemented');
+function evaluateTicTacToePosition(position) {
+  for (let x = 0; x < position.length; x += 1) {
+    for (let i = 0; i < position[x].length; i += 1) {
+      if (x !== 0 && x !== position.length - 1) {
+        if (
+          (position[x][i] === position[x][i + 1]
+            && position[x][i] === position[x][i - 1])
+          || (position[x][i] === position[x - 1][i]
+            && position[x][i] === position[x + 1][i])
+          || (position[x][i] === position[x - 1][i - 1]
+            && position[x][i] === position[x + 1][i + 1])
+          || (position[x][i] === position[x - 1][i + 1]
+            && position[x][i] === position[x + 1][i - 1])
+        ) {
+          if (position[x][i] !== undefined) {
+            return position[x][i];
+          }
+        }
+      } else if (
+        position[x][i] === position[x][i + 1]
+          && position[x][i] === position[x][i - 1]
+      ) {
+        if (position[x][i] !== undefined) {
+          return position[x][i];
+        }
+      }
+    }
+  }
+  return undefined;
 }
 
 module.exports = {
