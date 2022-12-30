@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-properties */
 /* *********************************************************************************************
  *                                                                                             *
  * Please read the following tutorial before implementing tasks:                                *
@@ -23,8 +24,10 @@
  *   getComposition(Math.sin, Math.asin)(x) => Math.sin(Math.asin(x))
  *
  */
-function getComposition(/* f, g */) {
-  throw new Error('Not implemented');
+function getComposition(f, g) {
+  return function (sad) {
+    return (f(g(sad)));
+  };
 }
 
 
@@ -44,8 +47,10 @@ function getComposition(/* f, g */) {
  *   power05(16) => 4
  *
  */
-function getPowerFunction(/* exponent */) {
-  throw new Error('Not implemented');
+function getPowerFunction(exponent) {
+  return function (cry) {
+    return cry ** exponent;
+  };
 }
 
 
@@ -62,8 +67,19 @@ function getPowerFunction(/* exponent */) {
  *   getPolynom(8)     => y = 8
  *   getPolynom()      => null
  */
-function getPolynom() {
-  throw new Error('Not implemented');
+function getPolynom(...abc) {
+  return function (x) {
+    const reversed = abc.slice().reverse();
+    let result = 0;
+    for (let i = 0; i < abc.length; i += 1) {
+      if (i === 0) {
+        result += reversed[i];
+      } else {
+        result += reversed[i] * x ** i;
+      }
+    }
+    return result;
+  };
 }
 
 
@@ -81,8 +97,14 @@ function getPolynom() {
  *   ...
  *   memoizer() => the same random number  (next run, returns the previous cached result)
  */
-function memoize(/* func */) {
-  throw new Error('Not implemented');
+function memoize(func) {
+  return function (cnuf) {
+    if (this.memo) {
+      return this.memo;
+    }
+    this.memo = func(cnuf);
+    return this.memo;
+  };
 }
 
 
@@ -147,8 +169,10 @@ function logger(/* func, logFunc */) {
  *   partialUsingArguments(fn, 'a','b','c')('d') => 'abcd'
  *   partialUsingArguments(fn, 'a','b','c','d')() => 'abcd'
  */
-function partialUsingArguments(/* fn, ...args1 */) {
-  throw new Error('Not implemented');
+function partialUsingArguments(fn, ...args1) {
+  return function (...args2) {
+    return (args1.join('') + args2.join(''));
+  };
 }
 
 
@@ -169,10 +193,17 @@ function partialUsingArguments(/* fn, ...args1 */) {
  *   getId4() => 7
  *   getId10() => 11
  */
-function getIdGeneratorFunction(/* startFrom */) {
-  throw new Error('Not implemented');
+function getIdGeneratorFunction(startFrom) {
+  let position = startFrom;
+  return function () {
+    if (position === startFrom) {
+      position += 1;
+      return startFrom;
+    }
+    position += 1;
+    return position - 1;
+  };
 }
-
 
 module.exports = {
   getComposition,
