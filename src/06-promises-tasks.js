@@ -144,6 +144,10 @@ function chainPromises(array, action) {
       (error) => console.log(error),
     );
 }
+// function chainPromises(/* array, action */) {
+//   throw new Error('Not implemented');
+// }
+
 module.exports = {
   willYouMarryMe,
   processAllPromises,
